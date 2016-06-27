@@ -1,0 +1,20 @@
+language: R
+sudo: required
+warnings_are_errors: true
+
+env: 
+  global:
+    - CRAN: https://cran.rstudio.com
+
+before_install:
+  - sudo add-apt-repository ppa:chris-lea/libsodium -y
+  - sudo apt-get update -q
+  - sudo apt-get install -qq libzmq3-dev libsodium-dev
+
+r_packages:
+  - assertthat
+  - pbdZMQ
+  - sodium
+
+r_check_args: --no-build-vignettes --no-manual
+

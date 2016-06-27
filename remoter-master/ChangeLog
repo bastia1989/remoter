@@ -1,0 +1,69 @@
+Release 0.3-3 (//):
+  * Fix warning precedence for small port values.
+  * Fix client timer printing.
+  * Add rDevices functions.
+  * Add rpng() and its utility functions.
+  * Add need_auto_rpng_off option to the status to inform client.
+  * Add ggplot2 support including print.ggplot() without dependency.
+  * Add rhelp() and its utility functions.
+  * Add need_auto_rhelp_on option to the status to inform client.
+  * Add hotkey.
+  * Add shutdown().
+  * Add packageInfo class to rhelp().
+  * Add `?`() in addition to rhelp().
+  * Fix Windows encoding problem.
+
+Release 0.3-2 (4/28/2016):
+  * Minor internal cleanup.
+  * Improve timer behavior.
+  * Fix s2c() bug.
+  * Fix bug that affected attaching some package namespaces (WCC).
+  * Always attach remoter namespace within the server.
+
+Release 0.3-1 (4/17/2016):
+  * Add "timer" option to client.
+  * Add "middleman" functionality via relay().
+  * Add blurb about relays to the vignette.
+  * Move password method with masking to getPass package.
+  * Integrate getPass() into client authentication.
+  * Internals: explicitly namespace pbdZMQ functions.
+
+Release 0.3-0 (2/17/2016):
+  * Dump log output to file.
+  * Add showlog().
+  * Add "q.server" argument to exit() (WCC).
+  * Complete refactoring of internals.
+  * Better state management/abstraction.
+  * Better clarity in client/server REPL's.
+  * Significant improvements to error checking in s2c() and c2s().
+
+Release 0.2-1 (2/10/2016):
+  * Make encryption/secure servers/sodium optional.
+  * Add note about ssh tunneling to vignette.
+  * Significantly enhance logger.
+  * Fix C-c client bug.
+
+Release 0.2-0 (2/3/2016):
+  * Encrypt communications via sodium.
+  * Large rewrite of internal state system.
+  * Vignette rewrite.
+  * Add basic logger for server.
+  * Disallow privileged ports.
+  * Better documentation and help.
+
+Release 0.1-2 (2/1/2016):
+  * Change param "remote_addr" to "addr" in client().
+  * Minor improvements to the repl.
+  * Better error checking and handling for addresses.
+
+Release 0.1-1 (1/30/2016):
+  * Add some remote checks, address validation in client.
+  * Changed behavior of exit(); added "client.only" option.
+  * Rearrange internals.
+  * Add vignette.
+  * Use pbdZMQ 0.2-1.
+
+Release 0.1-0 (10/16/2015):
+  * Added s2c() and c2s().
+  * Added lsc(), rmc(), and evalc().
+  * Imported functionality from pbdCS.
