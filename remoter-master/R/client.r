@@ -61,9 +61,9 @@ client <- function(addr="localhost", port=55555, prompt="remoter", timer=FALSE)
 remoter_readline <- function(input)
 {
   if (get.status(continuation))
-    symb <- "+ "
+  symb <- "+ "
   else
-    symb <- "> "
+  symb <- "> "
   
   prompt <- paste0(getval(prompt), symb)
   
@@ -73,7 +73,7 @@ remoter_readline <- function(input)
   {
     check <- tryCatch(read <- readline(prompt=prompt), interrupt=function(.) Cc_check)
     if (check != Cc_check)
-      break
+    break
     else
     {
       cat("^C\n")
@@ -81,15 +81,20 @@ remoter_readline <- function(input)
   }
   
   ### Add to history() and avoid repeatedly appending suffix.
+  
+  
+  
   tmp <- as.character(read)
   suffix <- paste0(" # ", getval(prompt))
   if (!grepl(x = tmp, pattern = paste0(suffix, "$"), perl = TRUE))
-    tmp <- paste0(tmp, suffix)
-  utils::timestamp(stamp = tmp, prefix = "", suffix = "", quiet = TRUE)
-
+  tmp <- paste0(tmp, suffix)
+  if(getval(Client.GUI) != 'Rstudio')
+  {       
+    utils::timestamp(stamp = tmp, prefix = "", suffix = "", quiet = TRUE)
+  }
   ret <- c(input, read)
   ret <- remoter_sanitize(inputs=ret)
-
+  
   return(ret)
 }
 
@@ -102,14 +107,14 @@ remoter_sanitize <- function(inputs)
   {
     input <- inputs[i]
     if (grepl(x=input, pattern="^(\\s+)?(q|quit)\\(", perl=TRUE)) 
-      inputs[i] <- "exit(client.only=TRUE)"
+    inputs[i] <- "exit(client.only=TRUE)"
     else if (grepl(x=input, pattern=".pbdenv") && !getval(debug))
     {
       remoter_client_stop("I can't do that.")
       inputs[i] <- "invisible()"
     }
     else if (grepl(x=input, pattern="^(\\s+)?geterrmessage\\(", perl=TRUE))
-      inputs[i] <- getval(client_lasterror)
+    inputs[i] <- getval(client_lasterror)
     else if (grepl(x=input, pattern="^(\\s+)?(\\?\\?|help.search\\(|help.start\\()", perl=TRUE))
     {
       remoter_client_stop("Using help() to obtain help files from the server.")
@@ -127,7 +132,7 @@ remoter_sanitize <- function(inputs)
       inputs[i] <- "invisible()"
     }
     else if (input == "")
-      inputs[i] <- "invisible()"
+    inputs[i] <- "invisible()"
     else if (grepl(x=input, pattern="^(\\s+)?(remoter::)?(client|server|relay)\\(", perl=TRUE))
     {
       remoter_client_stop("can not spawn client/server/relay from inside the client")
@@ -147,53 +152,53 @@ remoter_client_send <- function(input)
   
   ### Special cases that need to be eval'd locally
   if (all(grepl(x=input, pattern="^(\\s+)?s2c\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?c2s\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?lsc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?rmc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?evalc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.curc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.listc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.nextc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.prevc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.offc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.setc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.newc\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?dev.sizec\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   else if (all(grepl(x=input, pattern="^(\\s+)?rhelp\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   
   ### Update status by the server's results.
   ### Receive updates after remoter_send, means filter those locally handled first.
   set(status, remoter_receive())
-
+  
   ### Because rpng.off() needs a call at the client to display image.
   if (get.status(need_auto_rpng_off))
-    auto_rpng_off_local(get.status(ret))
-
+  auto_rpng_off_local(get.status(ret))
+  
   ### Because rhelp() needs a call at the client to cast help message.
   if (get.status(need_auto_rhelp_on))
-    auto_rhelp_on_local(get.status(ret))
-
+  auto_rhelp_on_local(get.status(ret))
+  
   ### Must come last! If client only wants to quit, server doesn't know 
   ### about it, and resets the status on receive.socket()
   if (all(grepl(x=input, pattern="^(\\s+)?exit\\(", perl=TRUE)))
-    eval(parse(text=input))
+  eval(parse(text=input))
   
-#    remoter_show_errors()
-#    remoter_show_warnings()
+  #    remoter_show_errors()
+  #    remoter_show_warnings()
   
   invisible()
 }
@@ -215,22 +220,22 @@ remoter_init_client <- function()
   return(TRUE)
 }
 
-  ### client use remoter_repl_printer to print the ret
-  ### server remoter_server_eval has no return value, so no results is shown on server 
+### client use remoter_repl_printer to print the ret
+### server remoter_server_eval has no return value, so no results is shown on server 
 
 remoter_repl_client <- function(env=globalenv())
 {
   if (!interactive())
-    stop("You can only use the client interactively at this time")
+  stop("You can only use the client interactively at this time")
   
   test <- remoter_init_client()
   if (!test) return(FALSE)
   
   timer <- getval(timer)
   if (timer)
-    EVALFUN <- function(expr) capture.output(system.time(expr))
+  EVALFUN <- function(expr) capture.output(system.time(expr))
   else
-    EVALFUN <- identity
+  EVALFUN <- identity
   
   while (TRUE)
   {
@@ -241,7 +246,7 @@ remoter_repl_client <- function(env=globalenv())
     while (TRUE)
     {
       input <- remoter_readline(input=input)
-
+      
       timing <- EVALFUN({
         remoter_client_send(input=input)
       })
@@ -251,11 +256,11 @@ remoter_repl_client <- function(env=globalenv())
       remoter_repl_printer()
       
       if (timer)
-        cat(paste0(timing[-1], collapse="\n"), "\n")
+      cat(paste0(timing[-1], collapse="\n"), "\n")
       
       ### Should go after all other evals and handlers
-	  ### if should_exit is TRUE, then the client returns invisible and jumps out the while loop.
-	  ### thus exits client
+      ### if should_exit is TRUE, then the client returns invisible and jumps out the while loop.
+      ### thus exits client
       if (get.status(should_exit))
       {
         set.status(remoter_prompt_active, FALSE)
