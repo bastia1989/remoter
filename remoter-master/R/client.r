@@ -88,7 +88,7 @@ remoter_readline <- function(input)
   suffix <- paste0(" # ", getval(prompt))
   if (!grepl(x = tmp, pattern = paste0(suffix, "$"), perl = TRUE))
   tmp <- paste0(tmp, suffix)
-  if(getval(Client.GUI) != 'Rstudio')
+  if(getval(Client.GUI) != 'RStudio')
   {       
     utils::timestamp(stamp = tmp, prefix = "", suffix = "", quiet = TRUE)
   }
