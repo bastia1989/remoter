@@ -50,85 +50,6 @@
 NULL
 
 #' @export
-# rhelp <- function(topic, package = NULL, lib.loc = NULL,
-# verbose = getOption("verbose"),
-# try.all.packages = getOption("help.try.all.packages"),
-# help_type = getOption("help_type"))
-# {
-# ### The next are very stupid but works.
-# if (missing(topic))
-# txt.head <- "utils::help("
-# else
-# txt.head <- paste0("utils::help('", as.character(substitute(topic)), "', ")
-
-# if (is.null(package))
-# package <- "NULL"
-# else
-# package <- paste0("'", as.character(substitute(package)), "'")
-
-# if (is.null(lib.loc))
-# lib.loc <- "NULL"
-# else
-# lib.loc <- paste0("'", as.character(lib.loc), "'")
-
-
-# ### should give some indicator of the platform of the client.
-
-
-# ### if local then show error msg; if remote then send null first and listen the eval result at local
-# ### side(which is err when c2s meets error at local side).
-# # if (iam("local"))
-# # {
-# # remoter_receive()
-# # value <- .Platform$GUI
-# # remoter_send(data = .Platform$GUI)
-# # }
-# # else if (iam("remote"))
-# # {
-# # remoter_send(NULL)
-
-# # value <- remoter_receive()
-
-# # if (identical(value, 'Rstudio'))
-# # {
-# # remoter_send(FALSE)
-# # set(Client.GUI,value)
-# # help_type = 'HTML'
-# # }
-# # else 
-# # {
-# # remoter_send(FALSE)
-# # set(Client.GUI,value)
-# # help_type = 'txt'
-# # }
-# # }
-
-
-# help_type <- paste0("'", help_type, "'")
-
-# txt <- paste0(txt.head, "package = ", package, ", ",
-# "lib.loc = ", lib.loc, ", ",
-# "verbose = ", verbose, ", ",
-# "try.all.packages = ", try.all.packages, ", ",
-# "help_type = ", help_type, ")")
-# ret <- eval(parse(text = txt))
-# ### Deal with "help_files_with_topic" or "packageInfo"
-# if (class(ret) == "help_files_with_topic")
-# Rd <- print.rhelp_files_with_topic(ret)
-# else if (class(ret) == "packageInfo")
-# Rd <- print.rpackageInfo(ret)
-# else
-# Rd <- ret
-
-# ### Ask client to show
-# if (class(ret) != "try-error")
-# set.status(need_auto_rhelp_on, TRUE)
-
-# ### Visible return is necessary because of retmoter_server_eval().
-# return(Rd)
-# }
-
-
 rhelp <- function(topic, package = NULL, lib.loc = NULL,
 verbose = getOption("verbose"),
 try.all.packages = getOption("help.try.all.packages"),
@@ -337,36 +258,6 @@ help_type = getOption("help_type"))
 #`?` <- if(get.status(remoter_prompt_active)==FALSE) utils::`?` else `?`
 #`?` <- function(e1, e2)
 
-
-
-# auto_rhelp_on_local <- function(Rd)
-# {
-# ### Don not use "latin1" to encode the character string.
-# encoding <- "UTF-8"
-# Encoding(Rd) <- encoding
-# ### Encoding in windows is inconsistent for the Rterm and file.show().
-# if (.Platform$OS.type == "windows")
-# encoding <- "latin1"
-
-# ### Cast Rd by class.
-# if (class(Rd) == "rhelp_files_with_topic")
-# {
-# temp <- tempfile("Rtxt")
-# cat(Rd, file = temp, sep = "\n")
-# file.show(temp, title = "R Help", delete.file = TRUE, encoding = encoding)
-# }
-# else if (class(Rd) == "rpackageInfo")
-# {
-# temp <- tempfile("RpackageInfo")
-# cat(Rd, file = temp, sep = "\n")
-# file.show(temp, title = "R Package", delete.file = TRUE,
-# encoding = encoding)
-# }
-# else
-# cat(Rd, sep = "\n")
-
-# invisible()
-# }
 auto_rhelp_on_local <- function(Rd)
 {
   ### Don not use "latin1" to encode the character string.
