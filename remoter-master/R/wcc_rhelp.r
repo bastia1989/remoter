@@ -66,9 +66,9 @@ help_type = getOption("help_type"))
   if(iam('local'))
   {
     remoter_receive()
-    value <- .Platform$GUI
+    #value <- .Platform$GUI
     remoter_send(data = .Platform$GUI)
-    set(Client.GUI,value)
+    #set(Client.GUI,value)
     
   }
   if(iam('remote'))  
